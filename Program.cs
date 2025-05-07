@@ -4,8 +4,11 @@ using PoinSiswa.Library.Model;
 using PoinSiswa.Library.Service;
 using PoinSiswa.Library.Configuration;
 using PoinSiswa.Library.TableDriven;
-using PoinSiswa.Library.Automata;
 using PoinSiswa.Library.Components;
+using Tubes_Tahap1_KPL_kelompok3.Components;
+using Tubes_Tahap1_KPL_kelompok3.Configuration;
+using Tubes_Tahap1_KPL_kelompok3.Model;
+using Tubes_Tahap1_KPL_kelompok3.table_driven;
 
 namespace PoinSiswa.App
 {
@@ -20,12 +23,51 @@ namespace PoinSiswa.App
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("=== SISTEM POIN SISWA ===");
+                Console.WriteLine("===== SISTEM POIN SISWA =====");
+                Console.WriteLine("1. Manajemen Siswa");
+                Console.WriteLine("2. Manajemen Pelanggaran");
+                Console.WriteLine("3. Statistik");
+                Console.WriteLine("4. Konfigurasi");
+                Console.WriteLine("0. Keluar");
+                Console.Write("Pilih menu: ");
+                string menu = Console.ReadLine();
+
+                switch (menu)
+                {
+                    case "1":
+                        MenuManajemenSiswa();
+                        break;
+                    case "2":
+                        MenuManajemenPelanggaran();
+                        break;
+                    case "3":
+                        MenuStatistik();
+                        break;
+                    case "4":
+                        MenuKonfigurasi();
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("Pilihan tidak valid.");
+                        break;
+                }
+
+                Console.WriteLine("\nTekan Enter untuk kembali ke menu...");
+                Console.ReadLine();
+            }
+        }
+
+        static void MenuManajemenSiswa()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("===== MANAJEMEN SISWA =====");
                 Console.WriteLine("1. Tambah Siswa");
                 Console.WriteLine("2. Lihat Semua Siswa");
-                Console.WriteLine("3. Tambah Pelanggaran");
-                Console.WriteLine("4. Lihat Riwayat Pelanggaran");
-                Console.WriteLine("5. Keluar");
+                Console.WriteLine("3. Cari Siswa (berdasarkan NIS)");
+                Console.WriteLine("0. Kembali ke Menu Utama");
                 Console.Write("Pilih menu: ");
                 string pilihan = Console.ReadLine();
 
@@ -38,20 +80,109 @@ namespace PoinSiswa.App
                         LihatSemuaSiswa();
                         break;
                     case "3":
-                        TambahPelanggaran();
+                        CariSiswa();
                         break;
-                    case "4":
-                        LihatPelanggaran();
-                        break;
-                    case "5":
+                    case "0":
                         return;
                     default:
                         Console.WriteLine("Pilihan tidak valid.");
                         break;
                 }
 
-                Console.WriteLine("\nTekan Enter untuk kembali ke menu...");
+                Console.WriteLine("\nTekan Enter untuk melanjutkan...");
                 Console.ReadLine();
+            }
+        }
+
+        static void MenuManajemenPelanggaran()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("===== MANAJEMEN PELANGGARAN =====");
+                Console.WriteLine("1. Tambah Pelanggaran");
+                Console.WriteLine("2. Lihat Semua Pelanggaran");
+                Console.WriteLine("3. Lihat Pelanggaran per Siswa");
+                Console.WriteLine("4. Ubah Status Pelanggaran");
+                Console.WriteLine("0. Kembali ke Menu Utama");
+                Console.Write("Pilih menu: ");
+                string pilihan = Console.ReadLine();
+
+                switch (pilihan)
+                {
+                    case "1":
+                        TambahPelanggaran();
+                        break;
+                    case "2":
+                        LihatSemuaPelanggaran();
+                        break;
+                    case "3":
+                        LihatPelanggaran();
+                        break;
+                    case "4":
+                        UbahStatusPelanggaran();
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("Pilihan tidak valid.");
+                        break;
+                }
+
+                Console.WriteLine("\nTekan Enter untuk melanjutkan...");
+                Console.ReadLine();
+            }
+        }
+
+        static void MenuStatistik()
+        {
+            Console.Clear();
+            Console.WriteLine("===== STATISTIK =====");
+            Console.WriteLine("1. Lihat Total Poin Siswa");
+            Console.WriteLine("2. Lihat Jumlah Pelanggaran per Kelas");
+            Console.WriteLine("0. Kembali ke Menu Utama");
+            Console.Write("Pilih menu: ");
+            string pilihan = Console.ReadLine();
+
+            switch (pilihan)
+            {
+                case "1":
+                    LihatSemuaSiswa(); // Menampilkan poin siswa
+                    break;
+                case "2":
+                    Console.WriteLine("Fitur belum diimplementasikan.");
+                    break;
+                case "0":
+                    return;
+                default:
+                    Console.WriteLine("Pilihan tidak valid.");
+                    break;
+            }
+        }
+
+        static void MenuKonfigurasi()
+        {
+            Console.Clear();
+            Console.WriteLine("===== KONFIGURASI SISTEM =====");
+            Console.WriteLine("1. Tampilkan Konfigurasi Aktif");
+            Console.WriteLine("2. Ubah Batas Poin");
+            Console.WriteLine("0. Kembali ke Menu Utama");
+            Console.Write("Pilih menu: ");
+            string pilihan = Console.ReadLine();
+
+            switch (pilihan)
+            {
+                case "1":
+                    configManager.TampilkanKonfigurasi();
+                    break;
+                case "2":
+                    configManager.UbahBatasPoin();
+                    break;
+                case "0":
+                    return;
+                default:
+                    Console.WriteLine("Pilihan tidak valid.");
+                    break;
             }
         }
 
@@ -61,7 +192,7 @@ namespace PoinSiswa.App
             string nama = Console.ReadLine();
             Console.Write("Kelas: ");
             string kelas = Console.ReadLine();
-            Siswa siswa = new Siswa { Id = Guid.NewGuid().GetHashCode(), Nama = nama, Kelas = kelas };
+            var siswa = new Siswa { Id = Guid.NewGuid().GetHashCode(), Nama = nama, Kelas = kelas };
             siswaService.TambahSiswa(siswa);
             Console.WriteLine("Siswa berhasil ditambahkan.");
         }
@@ -87,6 +218,25 @@ namespace PoinSiswa.App
             });
         }
 
+        static void CariSiswa()
+        {
+            Console.Write("Masukkan ID Siswa (NIS): ");
+            if (!int.TryParse(Console.ReadLine(), out int id))
+            {
+                Console.WriteLine("ID tidak valid.");
+                return;
+            }
+
+            var siswa = siswaService.CariSiswa(id);
+            if (siswa == null)
+            {
+                Console.WriteLine("Siswa tidak ditemukan.");
+                return;
+            }
+
+            Console.WriteLine($"Nama: {siswa.Nama}, Kelas: {siswa.Kelas}, Total Poin: {siswa.TotalPoin}");
+        }
+
         static void TambahPelanggaran()
         {
             Console.Write("ID Siswa: ");
@@ -96,14 +246,14 @@ namespace PoinSiswa.App
                 return;
             }
 
-            Siswa siswa = siswaService.CariSiswa(id);
+            var siswa = siswaService.CariSiswa(id);
             if (siswa == null)
             {
                 Console.WriteLine("Siswa tidak ditemukan.");
                 return;
             }
 
-            Console.Write("Jenis Pelanggaran (Misal: Merokok, Terlambat Masuk): ");
+            Console.Write("Jenis Pelanggaran: ");
             string jenis = Console.ReadLine();
 
             try
@@ -137,7 +287,7 @@ namespace PoinSiswa.App
                 return;
             }
 
-            Siswa siswa = siswaService.CariSiswa(id);
+            var siswa = siswaService.CariSiswa(id);
             if (siswa == null)
             {
                 Console.WriteLine("Siswa tidak ditemukan.");
@@ -158,6 +308,16 @@ namespace PoinSiswa.App
                 { "Poin", p => p.Poin.ToString() },
                 { "Status", p => p.Status.ToString() }
             });
+        }
+
+        static void LihatSemuaPelanggaran()
+        {
+            pelanggaranService.TampilkanSemuaPelanggaran(); // Harus disiapkan dalam service
+        }
+
+        static void UbahStatusPelanggaran()
+        {
+            Console.WriteLine("Fitur ubah status pelanggaran belum diimplementasikan.");
         }
     }
 }
