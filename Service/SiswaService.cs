@@ -13,6 +13,6 @@ namespace Tubes_Tahap1_KPL_kelompok3.Service
 
         public void TambahSiswa(Siswa siswa) => _daftarSiswa.Add(siswa);
 
-        public Siswa? CariSiswa(int id) => _daftarSiswa.FirstOrDefault(s => s.Id == id);
+        public Siswa? CariSiswa(int id) => _daftarSiswa.FirstOrDefault(s => s.id == id);
     }
 }

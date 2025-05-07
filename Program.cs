@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using PoinSiswa.Library.Model;
 using PoinSiswa.Library.Service;
 using PoinSiswa.Library.Configuration;
-using PoinSiswa.Library.TableDriven;
-using PoinSiswa.Library.Components;
 using Tubes_Tahap1_KPL_kelompok3.Components;
-using Tubes_Tahap1_KPL_kelompok3.Configuration;
 using Tubes_Tahap1_KPL_kelompok3.Model;
 using Tubes_Tahap1_KPL_kelompok3.table_driven;
 
@@ -173,10 +169,10 @@ namespace PoinSiswa.App
             switch (pilihan)
             {
                 case "1":
-                    configManager.TampilkanKonfigurasi();
+                    //configManager.TampilkanKonfigurasi();
                     break;
                 case "2":
-                    configManager.UbahBatasPoin();
+                    //configManager.UbahBatasPoin();
                     break;
                 case "0":
                     return;
@@ -312,7 +308,9 @@ namespace PoinSiswa.App
 
         static void LihatSemuaPelanggaran()
         {
-            pelanggaranService.TampilkanSemuaPelanggaran(); // Harus disiapkan dalam service
+
+            pelanggaranService.TampilkanSemuaPelanggaran(siswaService);
+
         }
 
         static void UbahStatusPelanggaran()
